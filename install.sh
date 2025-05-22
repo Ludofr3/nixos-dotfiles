@@ -11,7 +11,7 @@ if [ "$1" != "laptop" ] && [ "$1" != "server" ]; then
 fi
 
 TEMP_DIR=$(mktemp -d)
-REPO_URL="https://github.com/axel-denis/nixos-dotfiles.git"
+REPO_URL="https://github.com/Ludofr3/nixos-dotfiles.git"
 
 echo "Cloning repository..."
 git clone --depth 1 "$REPO_URL" "$TEMP_DIR" || exit 1
