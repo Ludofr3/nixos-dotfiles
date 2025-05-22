@@ -1,11 +1,11 @@
 { config, pkgs, inputs, ... }:
 
 let
-  dotfilesRepoUrl = "https://github.com/axel-denis/hyprland-dotfiles.git";
+  dotfilesRepoUrl = "https://github.com/Ludofr3/hyprland-dotfiles.git";
 
   dotfilesRepo = builtins.fetchGit {
     url = dotfilesRepoUrl;
-    rev = "9d5be06e318bcdc9e2a390e60f5e06a156f594d0";
+    rev = "aa8915f8c60f59b7cdbae3ad5816988cf74ea185";
   };
 
   # Get all users with home directories

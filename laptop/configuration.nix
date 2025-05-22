@@ -13,9 +13,17 @@
 
   time.timeZone = "Asia/Seoul";
 
+#  virtualisation.docker.enable = true;
+#  virtualisation.docker.daemon.settings = {
+#    userland-proxy = false;
+#    experimental = true;
+#    metrics-addr = "0.0.0.0:9323";
+#  };	
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = true;
+
   programs.hyprland.enable = true;
+
   services.displayManager.defaultSession = "hyprland";
   services.fail2ban.enable = true; # block repeated ssh login attemps
   services.tlp.enable = true; # power gestion/savings
@@ -23,6 +31,7 @@
   # allows wireguard to pass the firewall
   # import a wireguard file with :
   # nmcli connection import type wireguard file filename.conf
+#  networking.firewall.enable = false;
   networking.firewall = {
    # if packets are still dropped, they will show up in dmesg
    logReversePathDrops = true;
@@ -30,7 +39,7 @@
    extraCommands = ''
      ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 65142 -j RETURN
      ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 65142 -j RETURN
-   '';
+  '';
    extraStopCommands = ''
      ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 65142 -j RETURN || true
      ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 65142 -j RETURN || true
