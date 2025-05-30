@@ -31,26 +31,26 @@
   # allows wireguard to pass the firewall
   # import a wireguard file with :
   # nmcli connection import type wireguard file filename.conf
-#  networking.firewall.enable = false;
+  networking.firewall.enable = true;
   networking.firewall = {
    # if packets are still dropped, they will show up in dmesg
    logReversePathDrops = true;
    # wireguard trips rpfilter up
-   extraCommands = ''
-     ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 65142 -j RETURN
-     ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 65142 -j RETURN
-  '';
-   extraStopCommands = ''
-     ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 65142 -j RETURN || true
-     ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 65142 -j RETURN || true
-   '';
+#   extraCommands = ''
+#     ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 65142 -j RETURN
+#     ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 65142 -j RETURN
+#  '';
+#   extraStopCommands = ''
+#     ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 65142 -j RETURN || true
+#     ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 65142 -j RETURN || true
+#   '';
   };
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.supportedLocales = [
+  i18n.extraLocales = [
     "en_US.UTF-8/UTF-8"
     "fr_FR.UTF-8/UTF-8"
   ];

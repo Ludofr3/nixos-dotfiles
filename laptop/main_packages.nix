@@ -11,6 +11,7 @@
     jq # necessary for hyprland focus.sh
     direnv
     firefox
+    brave
     brightnessctl
     pipewire
     wireplumber # check if the two are necessary
@@ -34,8 +35,10 @@
     blender
 
     vscode.fhs # fhs allows for extensions to use internal binaries
+    code-cursor
   ];
-  fonts.packages = with pkgs; [ inter monaspace nerdfonts ];
+
+  fonts.packages = with pkgs; [ inter monaspace nerd-fonts.jetbrains-mono ];
   fonts.enableDefaultPackages = true;
   fonts.fontconfig = {
     defaultFonts = {

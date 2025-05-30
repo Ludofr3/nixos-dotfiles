@@ -1,14 +1,8 @@
 { config, pkgs, inputs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    bitwarden-desktop
     arduino-ide
-
-    #libreoffice & speell check
-    libreoffice-qt
-    hunspell
-    hunspellDicts.fr-any
-#    hunspellDicts.en_US
+    docker-compose
   ];
 
   # for arduino ide to compile to renesas board
@@ -24,7 +18,7 @@
   ];
 
   programs.virt-manager.enable = true;
-  users.groups.libvirtd.members = ["axel"];
+  users.groups.libvirtd.members = ["ludofr3"];
   virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
 }
