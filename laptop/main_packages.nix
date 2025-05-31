@@ -1,6 +1,7 @@
 { config, pkgs, inputs, ... }:
 {
   environment.systemPackages = with pkgs; [
+    swww #Wayland Wallpapers daemon
     neofetch
     pkgs.kitty # required for the default Hyprland config
     wl-clipboard
