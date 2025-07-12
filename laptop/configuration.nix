@@ -11,7 +11,7 @@
 
   networking.hostName = "nixos"; # Define your hostname.
 
-  time.timeZone = "Asia/Seoul";
+  time.timeZone = "Europe/Paris";
 
 #  virtualisation.docker.enable = true;
 #  virtualisation.docker.daemon.settings = {
