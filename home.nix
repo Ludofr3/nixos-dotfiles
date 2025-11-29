@@ -12,36 +12,72 @@
 
     # Gerer les dotfiles de maniere declarative
     xdg.configFile = {
-      "hypr".source = inputs.hyprland-dots + "/hypr";
-      "kitty".source = inputs.hyprland-dots + "/kitty";
-      "wofi".source = inputs.hyprland-dots + "/wofi";
-      "hyprpanel".source = inputs.hyprland-dots + "/hyprpanel";
+      "hypr".source = ./config/hypr;
+      "kitty".source = ./config/kitty;
+      "wofi".source = ./config/wofi;
+      # "hyprpanel".soucre = ./config/hyprpanel;
+      # "hypr".source = inputs.hyprland-dots + "/hypr";
+      # "kitty".source = inputs.hyprland-dots + "/kitty";
+      # "wofi".source = inputs.hyprland-dots + "/wofi";
+      # "hyprpanel".source = inputs.hyprland-dots + "/hyprpanel";
     };
 
     home.packages = with pkgs; [
       brave
       kitty
-      # Paquet VSCode personnalise
-      (let
-        # Definir vos extensions ici
-        my-vscode-extensions = with pkgs-unstable.vscode-extensions; [
+
+      # ---- Indispansable hyprlande
+      waybar
+      wofi
+      swww
+      dunst
+      libnotify
+
+      # ---- Outils systeme utiles
+      networkmanagerapplet
+      pavucontrol
+      grim
+      slurp
+      wl-clipboard
+
+      # ---------------------------
+      nerd-fonts.jetbrains-mono
+      font-awesome
+    ];
+
+
+    programs.vscode = {
+      enable = true;
+      package = pkgs-unstable.vscode;
+      profiles.default = {
+        extensions = with pkgs-unstable.vscode-extensions; [
           rust-lang.rust-analyzer
           ms-python.python
           github.copilot
+          jnoortheen.nix-ide
         ];
-
-        # Construire le paquet
-        my-vscode-with-extensions = (pkgs-unstable.vscode-with-extensions.override {
-          vscodeExtensions = my-vscode-extensions;
-          vscode = pkgs-unstable.vscode;
-        });
-      in my-vscode-with-extensions)
-    ];
+        userSettings = {
+          "editor.fontFamily" = "'JetBrains Mono', 'monospace'";
+          "window.zoomLevel" = 1;
+          "nix.enableLanguageServer" = true;
+          "nix.serverPath" = "nil";
+          "nix.serverSettings" = {
+            "nil" = {
+              "formatting" = { "command" = [ "nixfmt" ]; };
+            };
+          };
+        };
+      };
+    };
 
     programs.git = {
       enable = true;
       userName = "Ludofr3";
       userEmail = "ludovic.de-chavagnac@epitech.eu";
+      extraConfig = {
+        init.defaultBranch = "main";
+        pull.rebase = true;
+      };
     };
 
     programs.zsh = {
