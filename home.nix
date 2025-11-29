@@ -12,14 +12,14 @@
 
     # Gerer les dotfiles de maniere declarative
     xdg.configFile = {
-      "hypr".source = ./config/hypr;
-      "kitty".source = ./config/kitty;
-      "wofi".source = ./config/wofi;
-      # "hyprpanel".soucre = ./config/hyprpanel;
-      # "hypr".source = inputs.hyprland-dots + "/hypr";
-      # "kitty".source = inputs.hyprland-dots + "/kitty";
-      # "wofi".source = inputs.hyprland-dots + "/wofi";
-      # "hyprpanel".source = inputs.hyprland-dots + "/hyprpanel";
+      #"hypr".source = ./config/hypr;
+      #"kitty".source = ./config/kitty;
+      #"wofi".source = ./config/wofi;
+      #"hyprpanel".soucre = ./config/hyprpanel;
+      "hypr".source = inputs.hyprland-dots + "/hypr";
+      "kitty".source = inputs.hyprland-dots + "/kitty";
+      "wofi".source = inputs.hyprland-dots + "/wofi";
+      "hyprpanel".source = inputs.hyprland-dots + "/hyprpanel";
     };
 
     home.packages = with pkgs; [
@@ -40,9 +40,13 @@
       slurp
       wl-clipboard
 
-      # ---------------------------
+      # ------ FONTS ------------------------
       nerd-fonts.jetbrains-mono
       font-awesome
+
+      # ----- NIX LANGUAGES TOOLS -----------
+      pkgs-unstable.nil
+      pkgs-unstable.nixfmt-rfc-style
     ];
 
 
@@ -90,7 +94,7 @@
          update = "curl -sSL https://rawgithubusercontent.com/Ludfr3/nixos-dotfiles/main/install.sh | nix-shell -p git --run \"sh -s --laptop\"";
       };
       
-      initExtra = ''
+      initContent = ''
          config-push() {
            if [ -z "$1" ]; then
              echo "Erreur : Vous devez fournir un message de commit."
