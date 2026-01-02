@@ -1,7 +1,8 @@
 { config, pkgs, inputs, ... }:
 {
+
   environment.systemPackages = with pkgs; [
-    swww #Wayland Wallpapers daemon
+    swww
     neofetch
     pkgs.kitty # required for the default Hyprland config
     wl-clipboard
@@ -12,7 +13,7 @@
     jq # necessary for hyprland focus.sh
     direnv
     firefox
-    brave
+    google-chrome
     brightnessctl
     pipewire
     wireplumber # check if the two are necessary
@@ -36,8 +37,19 @@
     blender
 
     vscode.fhs # fhs allows for extensions to use internal binaries
-    code-cursor
+
+    python3
   ];
+
+  systemd.user.services.swww = {
+    description = "Simple Wayland Wallpaper";
+    serviceConfig = {
+      ExecStart = "${pkgs.swww}/bin/swww-daemon";
+      Restart = "always";
+      RestartSec = 1;
+    };
+    wantedBy = [ "default.target" ];
+  };
 
   fonts.packages = with pkgs; [ inter monaspace nerd-fonts.jetbrains-mono ];
   fonts.enableDefaultPackages = true;

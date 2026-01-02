@@ -2,7 +2,8 @@
   description = "A simple NixOS flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";   
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel/2be9f1ef6c2df2ecf0eebe5a039e8029d8d151cd"; # Mar 2 2025
 #    hyprswitch.url = "github:h3rmt/hyprswitch/release";
     matugen.url = "github:/InioX/Matugen";
@@ -20,24 +21,41 @@
   in {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = {inherit inputs;};
-
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        overlays = [
-          inputs.hyprpanel.overlay
- #         inputs.hyprswitch.overlays
-        ];
+      specialArgs = {
+	inherit inputs;
+      	pkgs-unstable = import inputs.nixpkgs-unstable {
+	  inherit system;
+	  config.allowUnfree = true;
+	};
       };
+      
+  #    pkgs = import nixpkgs {
+ #       inherit system;
+#        config = {
+ 	  #allowUnfree = true;
+	 # allowUnfreePredicate = true;
+	#};
+        #overlays = [
+        #  inputs.hyprpanel.overlay
+ #         inputs.hyprswitch.overlays
+       # ];
+      #};
       modules = [
+	{
+	  nixpkgs.config.allowUnfree = true;
+	  nixpkgs.overlays = [
+	    inputs.hyprpanel.overlay
+	  ];
+	}
         nix-flatpak.nixosModules.nix-flatpak
         ./hardware-configuration.nix
+	./update-config.nix
         ./configuration.nix
         ./packages.nix
         ./main_packages.nix
         ./users.nix
         ./dotfiles.nix
+        ./cachix.nix
       ];
     };
     packages.${system}.iso = nixos-generators.nixosGenerate {

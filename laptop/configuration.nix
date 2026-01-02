@@ -1,24 +1,21 @@
 { config, pkgs, inputs, ... }:
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
+  
   # Bootloader.
 #  boot.loader.grub.enable = pkgs.lib.mkForce true;
 #  boot.loader.grub.device = "/dev/vda";
 #  boot.loader.grub.useOSProber = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 80;
+
+  nixpkgs.config.allowUnfree = true;   
 
   networking.hostName = "nixos"; # Define your hostname.
 
   time.timeZone = "Europe/Paris";
 
-#  virtualisation.docker.enable = true;
-#  virtualisation.docker.daemon.settings = {
-#    userland-proxy = false;
-#    experimental = true;
-#    metrics-addr = "0.0.0.0:9323";
-#  };	
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = true;
 
@@ -28,6 +25,8 @@
   services.fail2ban.enable = true; # block repeated ssh login attemps
   services.tlp.enable = true; # power gestion/savings
 
+  services.autoUpdateConfig.enable = false; # auto uplaod nixos config on github after a 'sudo nixos-rebuild switch'
+
   # allows wireguard to pass the firewall
   # import a wireguard file with :
   # nmcli connection import type wireguard file filename.conf
@@ -35,15 +34,6 @@
   networking.firewall = {
    # if packets are still dropped, they will show up in dmesg
    logReversePathDrops = true;
-   # wireguard trips rpfilter up
-#   extraCommands = ''
-#     ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 65142 -j RETURN
-#     ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 65142 -j RETURN
-#  '';
-#   extraStopCommands = ''
-#     ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 65142 -j RETURN || true
-#     ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 65142 -j RETURN || true
-#   '';
   };
 
   hardware.bluetooth.enable = true;
@@ -106,6 +96,15 @@
   };
 
   programs.git.enable = true;
+
+#  programs.fzf = {
+#    enable = true;
+ #   defaultCommand = "fd --type f";
+    # vs
+#    defaultCommand = "${pkgs.fd}/bin/fd --type f";
+    # vs
+#    defaultCommand = "${lib.getExe pkgs.fd} --type f";
+#  };
 
   environment.interactiveShellInit = ''
     alias update='curl -sSL https://raw.githubusercontent.com/Ludofr3/nixos-dotfiles/main/install.sh | nix-shell -p git --run "sh -s -- laptop"'
